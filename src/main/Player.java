@@ -11,9 +11,9 @@ public class Player extends GameObject{
 
 	public Player(int posX, int posY) {
 		this.tag = "player";
+		
 		this.positionX = posX * 16;
 		this.positionY = posY * 16;
-		
 		this.width = 16;
 		this.height = 16;
 	}
