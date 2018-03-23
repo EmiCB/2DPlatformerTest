@@ -5,7 +5,7 @@ import com.emicb.engine.Renderer;
 
 public abstract class GameObject {
 	protected String tag;
-	protected int positionX, positionY;
+	protected float positionX, positionY;
 	protected int width, height;
 	protected boolean dead = false;			//remove object
 	
@@ -19,16 +19,16 @@ public abstract class GameObject {
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
-	public int getPositionX() {
+	public float getPositionX() {
 		return positionX;
 	}
-	public void setPositionX(int positionX) {
+	public void setPositionX(float positionX) {
 		this.positionX = positionX;
 	}
-	public int getPositionY() {
+	public float getPositionY() {
 		return positionY;
 	}
-	public void setPositionY(int positionY) {
+	public void setPositionY(float positionY) {
 		this.positionY = positionY;
 	}
 	public int getWidth() {

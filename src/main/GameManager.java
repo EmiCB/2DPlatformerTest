@@ -11,11 +11,12 @@ public class GameManager extends AbstractGame {
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	
 	public GameManager() {
-		
+		objects.add(new Player(2,2));
 	}
 	
-	public void reset() {
-		
+	@Override
+	public void init(GameContainer gc) {
+		gc.getRenderer().setAmbientColor(-1);
 	}
 
 	@Override
