@@ -9,7 +9,7 @@ public abstract class GameObject {
 	protected int width, height;
 	protected boolean dead = false;			//remove object
 	
-	public abstract void update(GameContainer gc, float dt);
+	public abstract void update(GameContainer gc, GameManager gm, float dt);
 	public abstract void render(GameContainer gc, Renderer r);
 	
 	

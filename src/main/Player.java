@@ -7,25 +7,98 @@ import com.emicb.engine.Renderer;
 
 public class Player extends GameObject{
 	
-	private float speed = 50;
+	private int tileX, tileY;
+	private float offX, offY;
+	
+	private float speed = 60;
+	private float fallSpeed = 10;
+	private float jump = 4;
+	private float fallDistance = 0;
+	
+	private boolean grounded = false;
 
 	public Player(int posX, int posY) {
 		this.tag = "player";
-		
-		this.positionX = posX * 16;
-		this.positionY = posY * 16;
-		this.width = 16;
-		this.height = 16;
+		this.tileX = posX;
+		this.tileY = posY;
+		this.offX = 0;
+		this.offY = 0;
+		this.positionX = posX * GameManager.TS;
+		this.positionY = posY * GameManager.TS;
+		this.width = GameManager.TS;
+		this.height = GameManager.TS;
 	}
 	
 	@Override
-	public void update(GameContainer gc, float dt) {
+	public void update(GameContainer gc, GameManager gm, float dt) {
+		//Left & Right
+		if(gc.getInput().isKey(KeyEvent.VK_D)) {
+			if(gm.getCollision(tileX + 1, tileY) || gm.getCollision(tileX + 1, tileY + (int)Math.signum((int)offY))) {
+				if(offX < 0) {
+					offX += dt * speed;
+					if(offX > 0) offX = 0;
+				}
+				else offX = 0;
+			}
+			else offX += dt * speed;
+		}
+		if(gc.getInput().isKey(KeyEvent.VK_A)) {
+			if(gm.getCollision(tileX - 1, tileY) || gm.getCollision(tileX - 1, tileY + (int)Math.signum((int)offY))) {
+				if(offX > 0) {
+					offX -= dt * speed;
+					if(offX < 0) offX = 0;
+				}
+				else offX = 0;
+			}
+			else offX -= dt * speed;
+		}
+		//End of Left & Right
 		
-		//simple movement
-		if(gc.getInput().isKey(KeyEvent.VK_W)) positionY -= dt * speed;		//up
-		if(gc.getInput().isKey(KeyEvent.VK_S)) positionY += dt * speed;		//down
-		if(gc.getInput().isKey(KeyEvent.VK_A)) positionX -= dt * speed;		//left
-		if(gc.getInput().isKey(KeyEvent.VK_D)) positionX += dt * speed;		//right
+		//Gravity & Jumping
+		fallDistance += dt * fallSpeed;
+		
+		if(gc.getInput().isKeyDown(KeyEvent.VK_W) && grounded) {
+			fallDistance = -jump;
+			grounded = false;
+		}
+		
+		offY += fallDistance;
+		
+		if(fallDistance < 0) {
+			if((gm.getCollision(tileX, tileY - 1) || gm.getCollision(tileX + (int)Math.signum((int)offX), tileY - 1)) && offY < 0) {
+				fallDistance = 0;
+				offY = 0;
+			}
+		}
+		if(fallDistance > 0) {
+			if((gm.getCollision(tileX, tileY + 1) || gm.getCollision(tileX + (int)Math.signum((int)offX), tileY + 1)) && offY > 0) {
+				fallDistance = 0;
+				offY = 0;
+				grounded = true;
+			}
+		}
+		//End of Jumping & Gravity
+		
+		//Final position
+		if(offY > GameManager.TS / 2) {
+			tileY++;
+			offY -= GameManager.TS;
+		}
+		if(offY < -GameManager.TS / 2) {
+			tileY--;
+			offY += GameManager.TS;
+		}
+		if(offX > GameManager.TS / 2) {
+			tileX++;
+			offX -= GameManager.TS;
+		}
+		if(offX < -GameManager.TS / 2) {
+			tileX--;
+			offX += GameManager.TS;
+		}
+			
+		positionX = tileX * GameManager.TS + offX;
+		positionY = tileY * GameManager.TS + offY;
 	}
 
 	@Override
