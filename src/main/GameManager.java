@@ -74,7 +74,11 @@ public class GameManager extends AbstractGame {
 			}
 		}
 	}
-
+	
+	public void addObject(GameObject object) {
+		objects.add(object);
+	}
+	
 	public boolean getCollision(int x, int y) {
 		if (x < 0 || x >= levelW || y < 0 || y >= levelH)
 			return true;

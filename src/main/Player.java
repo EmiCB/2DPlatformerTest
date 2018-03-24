@@ -99,6 +99,13 @@ public class Player extends GameObject{
 			
 		positionX = tileX * GameManager.TS + offX;
 		positionY = tileY * GameManager.TS + offY;
+		//End of Final position
+		
+		//Projectile firing
+		if(gc.getInput().isKeyDown(KeyEvent.VK_UP)) gm.addObject(new Projectile(tileX, tileY, offX + width / 2, offY + height / 2, 0));
+		if(gc.getInput().isKeyDown(KeyEvent.VK_RIGHT)) gm.addObject(new Projectile(tileX, tileY, offX + width / 2, offY + height / 2, 1));
+		if(gc.getInput().isKeyDown(KeyEvent.VK_DOWN)) gm.addObject(new Projectile(tileX, tileY, offX + width / 2, offY + height / 2, 2));
+		if(gc.getInput().isKeyDown(KeyEvent.VK_LEFT)) gm.addObject(new Projectile(tileX, tileY, offX + width / 2, offY + height / 2, 3));
 	}
 
 	@Override
