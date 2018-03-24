@@ -10,7 +10,7 @@ public class Player extends GameObject{
 	private int tileX, tileY;
 	private float offX, offY;
 	
-	private float speed = 60;
+	private float speed = 70;
 	private float fallSpeed = 10;
 	private float jump = 4;
 	private float fallDistance = 0;
@@ -18,7 +18,7 @@ public class Player extends GameObject{
 	private boolean grounded = false;
 
 	public Player(int posX, int posY) {
-		this.tag = "player";
+		this.tag = "Player";
 		this.tileX = posX;
 		this.tileY = posY;
 		this.offX = 0;
