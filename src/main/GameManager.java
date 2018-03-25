@@ -46,6 +46,7 @@ public class GameManager extends AbstractGame {
 	public void render(GameContainer gc, Renderer r) {
 		camera.render(r);
 		
+		//draws map tiles
 		for (int y = 0; y < levelH; y++) {
 			for (int x = 0; x < levelW; x++) {
 				if (collision[x + y * levelW])
@@ -54,6 +55,7 @@ public class GameManager extends AbstractGame {
 					r.drawRectFill(x * TS, y * TS, TS, TS, 0xfff9f9f9);
 			}
 		}
+		//end
 
 		for (GameObject obj : objects) {
 			obj.render(gc, r);
@@ -65,7 +67,8 @@ public class GameManager extends AbstractGame {
 
 		levelW = levelImage.getW();
 		levelH = levelImage.getH();
-
+		
+		//tile-based collision
 		collision = new boolean[levelW * levelH];
 
 		for (int y = 0; y < levelImage.getH(); y++) {
@@ -78,6 +81,7 @@ public class GameManager extends AbstractGame {
 					collision[index] = false;
 			}
 		}
+		//end
 	}
 	
 	public void addObject(GameObject object) {
@@ -102,6 +106,22 @@ public class GameManager extends AbstractGame {
 		GameContainer gc = new GameContainer(new GameManager());
 
 		gc.start();
+	}
+
+	public int getLevelW() {
+		return levelW;
+	}
+
+	public void setLevelW(int levelW) {
+		this.levelW = levelW;
+	}
+
+	public int getLevelH() {
+		return levelH;
+	}
+
+	public void setLevelH(int levelH) {
+		this.levelH = levelH;
 	}
 
 }

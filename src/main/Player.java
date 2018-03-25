@@ -4,8 +4,15 @@ import java.awt.event.KeyEvent;
 
 import com.emicb.engine.GameContainer;
 import com.emicb.engine.Renderer;
+import com.emicb.engine.gfx.ImageTile;
 
 public class Player extends GameObject{
+	
+	private ImageTile playerImage = new ImageTile("/sprites/playertest.png", GameManager.TS, GameManager.TS);
+	
+	private int direction = 0;
+	private float animation;
+	private float animationSpeed = 5;
 	
 	private int tileX, tileY;
 	private float offX, offY;
@@ -16,6 +23,7 @@ public class Player extends GameObject{
 	private float fallDistance = 0;
 	
 	private boolean grounded = false;
+	private boolean groundedLast = false;
 
 	public Player(int posX, int posY) {
 		this.tag = "Player";
@@ -106,11 +114,28 @@ public class Player extends GameObject{
 		if(gc.getInput().isKeyDown(KeyEvent.VK_RIGHT)) gm.addObject(new Projectile(tileX, tileY, offX + width / 2, offY + height / 2, 1));
 		if(gc.getInput().isKeyDown(KeyEvent.VK_DOWN)) gm.addObject(new Projectile(tileX, tileY, offX + width / 2, offY + height / 2, 2));
 		if(gc.getInput().isKeyDown(KeyEvent.VK_LEFT)) gm.addObject(new Projectile(tileX, tileY, offX + width / 2, offY + height / 2, 3));
+		
+		//Animation
+		if((int)fallDistance < 0) animation = 2;
+		else if((int)fallDistance > 0) animation = 3;
+		else if(gc.getInput().isKey(KeyEvent.VK_D) && (int)fallDistance == 0) {
+			direction = 0;
+			animation += dt * animationSpeed;
+			if(animation >= 2) animation = 0;
+		}
+		else if(gc.getInput().isKey(KeyEvent.VK_A) && (int)fallDistance == 0) {
+			direction = 1;
+			animation += dt * animationSpeed;
+			if(animation >= 2) animation = 0;
+		}
+		else animation = 0;
+		//End of Animation
 	}
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-		r.drawRectFill((int)positionX, (int)positionY, width, height, 0xff00ff00);		//placeholder player
+		r.drawImageTile(playerImage, (int)positionX, (int)positionY, (int)animation, direction);
+		//r.drawRectFill((int)positionX, (int)positionY, width, height, 0xff00ff00);		//placeholder player
 	}
 
 }
