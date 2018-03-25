@@ -10,6 +10,8 @@ public class Player extends GameObject{
 	
 	private ImageTile playerImage = new ImageTile("/sprites/playertest.png", GameManager.TS, GameManager.TS);
 	
+	private int paddingSides, paddingTop;
+	
 	private int direction = 0;
 	private float animation;
 	private float animationSpeed = 5;
@@ -35,6 +37,9 @@ public class Player extends GameObject{
 		this.positionY = posY * GameManager.TS;
 		this.width = GameManager.TS;
 		this.height = GameManager.TS;
+		
+		paddingSides = 3;
+		paddingTop = 1;
 	}
 	
 	@Override
@@ -42,21 +47,15 @@ public class Player extends GameObject{
 		//Left & Right
 		if(gc.getInput().isKey(KeyEvent.VK_D)) {
 			if(gm.getCollision(tileX + 1, tileY) || gm.getCollision(tileX + 1, tileY + (int)Math.signum((int)offY))) {
-				if(offX < 0) {
-					offX += dt * speed;
-					if(offX > 0) offX = 0;
-				}
-				else offX = 0;
+				offX += dt * speed;
+				if(offX > paddingSides) offX = paddingSides;
 			}
 			else offX += dt * speed;
 		}
 		if(gc.getInput().isKey(KeyEvent.VK_A)) {
 			if(gm.getCollision(tileX - 1, tileY) || gm.getCollision(tileX - 1, tileY + (int)Math.signum((int)offY))) {
-				if(offX > 0) {
-					offX -= dt * speed;
-					if(offX < 0) offX = 0;
-				}
-				else offX = 0;
+				offX -= dt * speed;
+				if(offX < -paddingSides) offX = -paddingSides;
 			}
 			else offX -= dt * speed;
 		}
@@ -64,6 +63,8 @@ public class Player extends GameObject{
 		
 		//Gravity & Jumping
 		fallDistance += dt * fallSpeed;
+		
+		if((int)fallDistance != 0) grounded = false;
 		
 		if(gc.getInput().isKeyDown(KeyEvent.VK_W) && grounded) {
 			fallDistance = -jump;
@@ -73,13 +74,13 @@ public class Player extends GameObject{
 		offY += fallDistance;
 		
 		if(fallDistance < 0) {
-			if((gm.getCollision(tileX, tileY - 1) || gm.getCollision(tileX + (int)Math.signum((int)offX), tileY - 1)) && offY < 0) {
+			if((gm.getCollision(tileX, tileY - 1) || gm.getCollision(tileX + (int)Math.signum((int) Math.abs(offX) > paddingSides ? offX : 0), tileY - 1)) && offY < -paddingTop) {
 				fallDistance = 0;
-				offY = 0;
+				offY = -paddingTop;
 			}
 		}
 		if(fallDistance > 0) {
-			if((gm.getCollision(tileX, tileY + 1) || gm.getCollision(tileX + (int)Math.signum((int)offX), tileY + 1)) && offY > 0) {
+			if((gm.getCollision(tileX, tileY + 1) || gm.getCollision(tileX + (int)Math.signum((int)Math.abs(offX) > paddingSides ? offX : 0), tileY + 1)) && offY > 0) {
 				fallDistance = 0;
 				offY = 0;
 				grounded = true;
