@@ -7,6 +7,9 @@ import com.emicb.engine.GameContainer;
 import com.emicb.engine.Renderer;
 import com.emicb.engine.gfx.Image;
 
+import objects.Platform;
+import objects.Player;
+
 public class GameManager extends AbstractGame {
 
 	public static final int TS = 16;		//tile size
@@ -19,10 +22,11 @@ public class GameManager extends AbstractGame {
 
 	public GameManager() {
 		objects.add(new Player(2, 2));
+		objects.add(new Platform());
 
 		loadLevel("/sprites/testlevel.png");
 		
-		camera = new Camera("Player");
+		camera = new Camera("player");
 	}
 
 	@Override
@@ -39,6 +43,8 @@ public class GameManager extends AbstractGame {
 				i--; // prevents skipping objects
 			}
 		}
+		Physics.update();
+		
 		camera.update(gc, this, dt);
 	}
 

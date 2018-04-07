@@ -1,7 +1,10 @@
-package main;
+package objects;
 
 import com.emicb.engine.GameContainer;
 import com.emicb.engine.Renderer;
+
+import main.GameManager;
+import main.GameObject;
 
 public class Projectile extends GameObject {
 	
@@ -10,7 +13,6 @@ public class Projectile extends GameObject {
 	
 	private int direction;
 	private float speed = 200;
-	private int size = 4;
 
 	public Projectile(int tileX, int tileY,float offX, float offY, int direction) {
 		this.direction = direction;
@@ -20,6 +22,10 @@ public class Projectile extends GameObject {
 		this.offY = offY;
 		positionX = tileX * GameManager.TS + offX;
 		positionY = tileY * GameManager.TS + offY;
+		this.width = 4;
+		this.height = 4;
+		this.paddingSides = 0;
+		this.paddingTop = 0;
 	}
 	
 	@Override
@@ -58,7 +64,13 @@ public class Projectile extends GameObject {
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-		r.drawRectFill((int)(positionX - (size / 2)), (int)(positionY - (size / 2)), size, size, 0xff0000ff);
+		r.drawRectFill((int)positionX, (int)positionY, width, height, 0xff0000ff);
+	}
+
+	@Override
+	public void collision(GameObject other) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

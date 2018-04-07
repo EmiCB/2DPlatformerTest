@@ -1,4 +1,4 @@
-package main;
+package objects;
 
 import java.awt.event.KeyEvent;
 
@@ -6,15 +6,17 @@ import com.emicb.engine.GameContainer;
 import com.emicb.engine.Renderer;
 import com.emicb.engine.gfx.ImageTile;
 
+import components.AABBComponent;
+import main.GameManager;
+import main.GameObject;
+
 public class Player extends GameObject{
 	
 	private ImageTile playerImage = new ImageTile("/sprites/playertest.png", GameManager.TS, GameManager.TS);
 	
-	private int paddingSides, paddingTop;
-	
 	private int direction = 0;
 	private float animation;
-	private float animationSpeed = 5;
+	private float animationSpeed = 7;
 	
 	private int tileX, tileY;
 	private float offX, offY;
@@ -25,10 +27,9 @@ public class Player extends GameObject{
 	private float fallDistance = 0;
 	
 	private boolean grounded = false;
-	private boolean groundedLast = false;
 
 	public Player(int posX, int posY) {
-		this.tag = "Player";
+		this.tag = "player";
 		this.tileX = posX;
 		this.tileY = posY;
 		this.offX = 0;
@@ -37,9 +38,10 @@ public class Player extends GameObject{
 		this.positionY = posY * GameManager.TS;
 		this.width = GameManager.TS;
 		this.height = GameManager.TS;
+		this.paddingSides = 3;
+		this.paddingTop = 1;
 		
-		paddingSides = 3;
-		paddingTop = 1;
+		this.addComponent(new AABBComponent(this));
 	}
 	
 	@Override
@@ -131,12 +133,22 @@ public class Player extends GameObject{
 		}
 		else animation = 0;
 		//End of Animation
+		
+		this.updateComponents(gc, gm, dt);
 	}
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
 		r.drawImageTile(playerImage, (int)positionX, (int)positionY, (int)animation, direction);
 		//r.drawRectFill((int)positionX, (int)positionY, width, height, 0xff00ff00);		//placeholder player
+		
+		this.renderComponents(gc, r);
+	}
+
+	@Override
+	public void collision(GameObject other) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
