@@ -12,15 +12,15 @@ public class Platform extends GameObject {
 	private int color = (int) (Math.random() * Integer.MAX_VALUE);
 	
 	public Platform() {
-		this.tag = "platfrom";
+		this.tag = "platform";
 		this.width = 32;
 		this.height = 16;
 		this.paddingSides = 0;
 		this.paddingTop = 0;
 		
 		//temp
-		this.positionX = 18;
-		this.positionY = 11;
+		this.positionX = 40;
+		this.positionY = 40;
 		//
 		
 		this.addComponent(new AABBComponent(this));

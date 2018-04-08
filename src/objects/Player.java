@@ -15,7 +15,7 @@ public class Player extends GameObject{
 	private ImageTile playerImage = new ImageTile("/sprites/playertest.png", GameManager.TS, GameManager.TS);
 	
 	private int direction = 0;
-	private float animation;
+	private float animation = 0;
 	private float animationSpeed = 7;
 	
 	private int tileX, tileY;
@@ -27,6 +27,7 @@ public class Player extends GameObject{
 	private float fallDistance = 0;
 	
 	private boolean grounded = false;
+	private boolean colliding = false;
 
 	public Player(int posX, int posY) {
 		this.tag = "player";
@@ -68,13 +69,6 @@ public class Player extends GameObject{
 		
 		if((int)fallDistance != 0) grounded = false;
 		
-		if(gc.getInput().isKeyDown(KeyEvent.VK_W) && grounded) {
-			fallDistance = -jump;
-			grounded = false;
-		}
-		
-		offY += fallDistance;
-		
 		if(fallDistance < 0) {
 			if((gm.getCollision(tileX, tileY - 1) || gm.getCollision(tileX + (int)Math.signum((int) Math.abs(offX) > paddingSides ? offX : 0), tileY - 1)) && offY < -paddingTop) {
 				fallDistance = 0;
@@ -88,6 +82,13 @@ public class Player extends GameObject{
 				grounded = true;
 			}
 		}
+		
+		if(gc.getInput().isKeyDown(KeyEvent.VK_W) && grounded) {
+			fallDistance = -jump;
+			grounded = false;
+		}
+		
+		offY += fallDistance;
 		//End of Jumping & Gravity
 		
 		//Final position
@@ -107,7 +108,7 @@ public class Player extends GameObject{
 			tileX--;
 			offX += GameManager.TS;
 		}
-			
+		
 		positionX = tileX * GameManager.TS + offX;
 		positionY = tileY * GameManager.TS + offY;
 		//End of Final position
@@ -134,7 +135,13 @@ public class Player extends GameObject{
 		else animation = 0;
 		//End of Animation
 		
+		colliding = false;
+		//grounded = false;		//messes up jumping
+		
 		this.updateComponents(gc, gm, dt);
+		
+		positionX = tileX * GameManager.TS + offX;
+		positionY = tileY * GameManager.TS + offY;
 	}
 
 	@Override
@@ -147,8 +154,20 @@ public class Player extends GameObject{
 
 	@Override
 	public void collision(GameObject other) {
-		// TODO Auto-generated method stub
-		
+		if(other.getTag().equalsIgnoreCase("platform")) {
+			AABBComponent myComponent = (AABBComponent) this.findComponent("aabb");
+			AABBComponent otherComponent = (AABBComponent) other.findComponent("aabb");
+			//player on top
+			if(myComponent.getCenterY() < otherComponent.getCenterY()) {					//add: && fallDistance > 0 to get a platform u can jump through the bottom of
+				int distance = (myComponent.getHalfHeight() + otherComponent.getHalfHeight()) - (otherComponent.getCenterY() - myComponent.getCenterY());
+				offY -= distance;
+				positionY -= distance;
+				myComponent.setCenterY(myComponent.getCenterY() - distance);
+				fallDistance = 0;
+				grounded = true;
+				colliding = true;
+			}
+		}
 	}
 
 }

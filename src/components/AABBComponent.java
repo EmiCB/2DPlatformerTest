@@ -15,6 +15,7 @@ public class AABBComponent extends Component {
 	
 	public AABBComponent(GameObject parent) {
 		this.parent = parent;
+		this.tag = "aabb";
 	}
 	
 	@Override
