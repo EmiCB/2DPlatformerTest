@@ -19,8 +19,12 @@ public class Platform extends GameObject {
 		this.paddingTop = 0;
 		
 		//temp
-		this.positionX = 40;
-		this.positionY = 40;
+		//this.positionX = 120;
+		//this.positionY = 200;
+		
+		this.positionX = 50;
+		this.positionY = 300;
+
 		//
 		
 		this.addComponent(new AABBComponent(this));
@@ -28,6 +32,9 @@ public class Platform extends GameObject {
 
 	@Override
 	public void update(GameContainer gc, GameManager gm, float dt) {
+		//int temp = 0;
+		//temp+= dt;
+		//positionY += Math.cos(temp) * 2;
 		this.updateComponents(gc, gm, dt);
 	}
 

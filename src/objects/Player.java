@@ -27,7 +27,6 @@ public class Player extends GameObject{
 	private float fallDistance = 0;
 	
 	private boolean grounded = false;
-	private boolean colliding = false;
 
 	public Player(int posX, int posY) {
 		this.tag = "player";
@@ -135,9 +134,6 @@ public class Player extends GameObject{
 		else animation = 0;
 		//End of Animation
 		
-		colliding = false;
-		//grounded = false;		//messes up jumping
-		
 		this.updateComponents(gc, gm, dt);
 		
 		positionX = tileX * GameManager.TS + offX;
@@ -154,20 +150,46 @@ public class Player extends GameObject{
 
 	@Override
 	public void collision(GameObject other) {
+		//platform collision
 		if(other.getTag().equalsIgnoreCase("platform")) {
 			AABBComponent myComponent = (AABBComponent) this.findComponent("aabb");
 			AABBComponent otherComponent = (AABBComponent) other.findComponent("aabb");
-			//player on top
-			if(myComponent.getCenterY() < otherComponent.getCenterY()) {					//add: && fallDistance > 0 to get a platform u can jump through the bottom of
-				int distance = (myComponent.getHalfHeight() + otherComponent.getHalfHeight()) - (otherComponent.getCenterY() - myComponent.getCenterY());
-				offY -= distance;
-				positionY -= distance;
-				myComponent.setCenterY(myComponent.getCenterY() - distance);
-				fallDistance = 0;
-				grounded = true;
-				colliding = true;
+			
+			if(Math.abs(myComponent.getCenterX() - otherComponent.getCenterX()) < Math.abs(myComponent.getCenterY() - otherComponent.getCenterY())) {
+				//player on top
+				if(myComponent.getCenterY() < otherComponent.getCenterY()) {					//add: && fallDistance > 0 to get a platform u can jump through the bottom of
+					int distance = (myComponent.getHalfHeight() + otherComponent.getHalfHeight()) - (otherComponent.getCenterY() - myComponent.getCenterY());
+					offY -= distance;
+					positionY -= distance;
+					myComponent.setCenterY(myComponent.getCenterY() - distance);
+					fallDistance = 0;
+					grounded = true;
+				}
+				//player underneath
+				if(myComponent.getCenterY() > otherComponent.getCenterY()) {
+					int distance = (myComponent.getHalfHeight() + otherComponent.getHalfHeight()) - (myComponent.getCenterY() - otherComponent.getCenterY());
+					offY += distance;
+					positionY += distance;
+					myComponent.setCenterY(myComponent.getCenterY() + distance);
+					fallDistance = 0;
+				}
+			}
+			else {
+				//player on top
+				if(myComponent.getCenterX() < otherComponent.getCenterX()) {
+					int distance = (myComponent.getHalfWidth() + otherComponent.getHalfWidth()) - (otherComponent.getCenterX() - myComponent.getCenterX());
+					offX -= distance;
+					positionX -= distance;
+					myComponent.setCenterX(myComponent.getCenterX() - distance);
+				}
+				//player underneath
+				if(myComponent.getCenterX() > otherComponent.getCenterX()) {
+					int distance = (myComponent.getHalfWidth() + otherComponent.getHalfWidth()) - (myComponent.getCenterX() - otherComponent.getCenterX());
+					offX += distance;
+					positionX += distance;
+					myComponent.setCenterX(myComponent.getCenterX() + distance);
+				}
 			}
 		}
 	}
-
 }

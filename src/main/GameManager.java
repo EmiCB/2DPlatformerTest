@@ -24,7 +24,7 @@ public class GameManager extends AbstractGame {
 		objects.add(new Player(2, 2));
 		objects.add(new Platform());
 
-		loadLevel("/sprites/testlevel.png");
+		loadLevel("/sprites/testlevel2.png");
 		
 		camera = new Camera("player");
 	}
