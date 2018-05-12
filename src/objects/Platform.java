@@ -18,14 +18,14 @@ public class Platform extends GameObject {
 		this.paddingSides = 0;
 		this.paddingTop = 0;
 		
-		//temp
-		//this.positionX = 120;
-		//this.positionY = 200;
-		
-		this.positionX = 50;
-		this.positionY = 300;
-
-		//
+		if (GameManager.currentLevel == GameManager.level1) {
+			this.positionX = 40;
+			this.positionY = 40;
+		}
+		else if (GameManager.currentLevel == GameManager.level2) {
+			this.positionX = 50;
+			this.positionY = 300;
+		}
 		
 		this.addComponent(new AABBComponent(this));
 	}

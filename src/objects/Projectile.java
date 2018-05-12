@@ -2,6 +2,7 @@ package objects;
 
 import com.emicb.engine.GameContainer;
 import com.emicb.engine.Renderer;
+import com.emicb.engine.gfx.Light;
 
 import main.GameManager;
 import main.GameObject;
@@ -13,6 +14,8 @@ public class Projectile extends GameObject {
 	
 	private int direction;
 	private float speed = 200;
+	
+	private Light light = new Light(30, 0xff9966ff);
 
 	public Projectile(int tileX, int tileY,float offX, float offY, int direction) {
 		this.direction = direction;
@@ -65,6 +68,7 @@ public class Projectile extends GameObject {
 	@Override
 	public void render(GameContainer gc, Renderer r) {
 		r.drawRectFill((int)positionX, (int)positionY, width, height, 0xff0000ff);
+		if(GameManager.showLightShow) r.drawLight(light, (int)positionX, (int)positionY);
 	}
 
 	@Override

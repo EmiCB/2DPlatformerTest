@@ -30,7 +30,9 @@ public class AABBComponent extends Component {
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-		r.drawRect(centerX - halfWidth, centerY - halfHeight, halfWidth * 2, halfHeight * 2, 0xff000000);
+		if (GameManager.showHitboxes == true) {
+			r.drawRect(centerX - halfWidth, centerY - halfHeight, halfWidth * 2, halfHeight * 2, 0xff000000);
+		}
 	}
 
 	public int getCenterX() {

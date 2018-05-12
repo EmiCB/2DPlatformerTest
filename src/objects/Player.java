@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import com.emicb.engine.GameContainer;
 import com.emicb.engine.Renderer;
 import com.emicb.engine.gfx.ImageTile;
+import com.emicb.engine.gfx.Light;
 
 import components.AABBComponent;
 import main.GameManager;
@@ -23,8 +24,10 @@ public class Player extends GameObject{
 	
 	private float speed = 70;
 	private float fallSpeed = 10;
-	private float jump = 4;
+	private float jump = 4; 			//4 is good
 	private float fallDistance = 0;
+	
+	private Light light;
 	
 	private boolean grounded = false;
 
@@ -40,6 +43,8 @@ public class Player extends GameObject{
 		this.height = GameManager.TS;
 		this.paddingSides = 3;
 		this.paddingTop = 1;
+		
+		light = new Light(height + 20, 0xffcc99ff);
 		
 		this.addComponent(new AABBComponent(this));
 	}
@@ -143,6 +148,7 @@ public class Player extends GameObject{
 	@Override
 	public void render(GameContainer gc, Renderer r) {
 		r.drawImageTile(playerImage, (int)positionX, (int)positionY, (int)animation, direction);
+		if(GameManager.showLightShow) r.drawLight(light, (int)positionX + (width/2), (int)positionY + (height/2));
 		//r.drawRectFill((int)positionX, (int)positionY, width, height, 0xff00ff00);		//placeholder player
 		
 		this.renderComponents(gc, r);

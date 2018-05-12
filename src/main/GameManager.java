@@ -11,7 +11,18 @@ import objects.Platform;
 import objects.Player;
 
 public class GameManager extends AbstractGame {
-
+	
+	// Testing Options
+	public static String level1 = "/sprites/testlevel.png";
+	public static String level2 = "/sprites/testlevel2.png";
+	
+	public static String currentLevel = level1;
+	public static boolean showHitboxes = false;
+	private boolean addAABBPlatform = false;
+	public static boolean showLightShow = true;
+	// end of testing options
+	
+	
 	public static final int TS = 16;		//tile size
 
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
@@ -22,16 +33,17 @@ public class GameManager extends AbstractGame {
 
 	public GameManager() {
 		objects.add(new Player(2, 2));
-		objects.add(new Platform());
+		if (addAABBPlatform) objects.add(new Platform());
 
-		loadLevel("/sprites/testlevel2.png");
+		loadLevel(currentLevel);
 		
 		camera = new Camera("player");
 	}
 
 	@Override
 	public void init(GameContainer gc) {
-		gc.getRenderer().setAmbientColor(-1);
+		if(showLightShow) gc.getRenderer().setAmbientColor(0xff808080);	//-1 turns off
+		else gc.getRenderer().setAmbientColor(-1);
 	}
 
 	@Override
@@ -62,7 +74,7 @@ public class GameManager extends AbstractGame {
 			}
 		}
 		//end
-
+		
 		for (GameObject obj : objects) {
 			obj.render(gc, r);
 		}
