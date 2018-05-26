@@ -123,6 +123,14 @@ public class Player extends GameObject{
 		if(gc.getInput().isKeyDown(KeyEvent.VK_DOWN)) gm.addObject(new Projectile(tileX, tileY, offX + width / 2, offY + height / 2, 2));
 		if(gc.getInput().isKeyDown(KeyEvent.VK_LEFT)) gm.addObject(new Projectile(tileX, tileY, offX + width / 2, offY + height / 2, 3));
 		
+		//Reset Position
+		if (GameManager.enablePositionReset) {
+			if(gc.getInput().isKeyDown(KeyEvent.VK_R)) {
+				tileX = 2;
+				tileY = 2;
+			}
+		}
+		
 		//Animation
 		if((int)fallDistance < 0) animation = 2;
 		else if((int)fallDistance > 0) animation = 3;
@@ -161,7 +169,7 @@ public class Player extends GameObject{
 			AABBComponent myComponent = (AABBComponent) this.findComponent("aabb");
 			AABBComponent otherComponent = (AABBComponent) other.findComponent("aabb");
 			
-			if(Math.abs(myComponent.getCenterX() - otherComponent.getCenterX()) < Math.abs(myComponent.getCenterY() - otherComponent.getCenterY())) {
+			if(Math.abs(myComponent.getLastCenterX() - otherComponent.getLastCenterX()) < myComponent.getHalfWidth() + otherComponent.getHalfWidth()) {
 				//player on top
 				if(myComponent.getCenterY() < otherComponent.getCenterY()) {					//add: && fallDistance > 0 to get a platform u can jump through the bottom of
 					int distance = (myComponent.getHalfHeight() + otherComponent.getHalfHeight()) - (otherComponent.getCenterY() - myComponent.getCenterY());
@@ -181,14 +189,14 @@ public class Player extends GameObject{
 				}
 			}
 			else {
-				//player on top
+				//player on left
 				if(myComponent.getCenterX() < otherComponent.getCenterX()) {
 					int distance = (myComponent.getHalfWidth() + otherComponent.getHalfWidth()) - (otherComponent.getCenterX() - myComponent.getCenterX());
 					offX -= distance;
 					positionX -= distance;
 					myComponent.setCenterX(myComponent.getCenterX() - distance);
 				}
-				//player underneath
+				//player right
 				if(myComponent.getCenterX() > otherComponent.getCenterX()) {
 					int distance = (myComponent.getHalfWidth() + otherComponent.getHalfWidth()) - (myComponent.getCenterX() - otherComponent.getCenterX());
 					offX += distance;

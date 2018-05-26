@@ -12,6 +12,7 @@ public class AABBComponent extends Component {
 	private GameObject parent;
 	private int centerX, centerY;
 	private int halfWidth, halfHeight;
+	private int lastCenterX, lastCenterY;
 	
 	public AABBComponent(GameObject parent) {
 		this.parent = parent;
@@ -20,6 +21,9 @@ public class AABBComponent extends Component {
 	
 	@Override
 	public void update(GameContainer gc, GameManager gm, float dt) {
+		lastCenterX = centerX;
+		lastCenterY = centerY;
+		
 		centerX = (int) (parent.getPositionX() + (parent.getWidth() / 2));
 		centerY = (int) (parent.getPositionY() + (parent.getHeight() / 2) + (parent.getPaddingTop() / 2));
 		halfWidth = (parent.getWidth()) / 2 - parent.getPaddingSides();
@@ -73,5 +77,21 @@ public class AABBComponent extends Component {
 
 	public void setParent(GameObject parent) {
 		this.parent = parent;
+	}
+
+	public int getLastCenterX() {
+		return lastCenterX;
+	}
+
+	public void setLastCenterX(int lastCenterX) {
+		this.lastCenterX = lastCenterX;
+	}
+
+	public int getLastCenterY() {
+		return lastCenterY;
+	}
+
+	public void setLastCenterY(int lastCenterY) {
+		this.lastCenterY = lastCenterY;
 	}
 }

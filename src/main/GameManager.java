@@ -16,10 +16,11 @@ public class GameManager extends AbstractGame {
 	public static String level1 = "/sprites/testlevel.png";
 	public static String level2 = "/sprites/testlevel2.png";
 	
-	public static String currentLevel = level1;
-	public static boolean showHitboxes = false;
-	private boolean addAABBPlatform = false;
-	public static boolean showLightShow = true;
+	public static String currentLevel = level2;
+	public static boolean showHitboxes = true;
+	private boolean addAABBPlatform = true;
+	public static boolean showLightShow = false;
+	public static boolean enablePositionReset = true;
 	// end of testing options
 	
 	

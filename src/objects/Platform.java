@@ -23,7 +23,7 @@ public class Platform extends GameObject {
 			this.positionY = 40;
 		}
 		else if (GameManager.currentLevel == GameManager.level2) {
-			this.positionX = 50;
+			this.positionX = 40;
 			this.positionY = 300;
 		}
 		
@@ -32,9 +32,12 @@ public class Platform extends GameObject {
 
 	@Override
 	public void update(GameContainer gc, GameManager gm, float dt) {
+		//Movement
 		//int temp = 0;
-		//temp+= dt;
+		//temp += dt;
 		//positionY += Math.cos(temp) * 2;
+		//end of movement
+		
 		this.updateComponents(gc, gm, dt);
 	}
 
